@@ -14,6 +14,7 @@ export const RetroStorage = {
     const allData = readAll();
     allData[gameId] = { ...(allData[gameId] || {}), [key]: value };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+    window.dispatchEvent(new CustomEvent('storagechange', { detail: { gameId, key, value } }));
     return value;
   }
 };

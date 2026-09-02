@@ -3,6 +3,8 @@ import { saveScore, getBestScore } from '../../shared/records.js';
 import { mountHud } from '../../shared/hud.js';
 import { Audio } from '../../shared/audio.js';
 import '../../shared/skins.js';
+import '../../shared/auth.js';
+import { unlockAchievement } from '../../shared/achievements.js';
 
 const canvas = document.querySelector('#game');
 const context = canvas.getContext('2d');
@@ -20,6 +22,8 @@ let nextDirection;
 let score;
 let timer;
 let running;
+let startedAt;
+let apples;
 
 function randomApple() {
   let candidate;
@@ -28,9 +32,9 @@ function randomApple() {
   return candidate;
 }
 function reset() {
-  clearInterval(timer); snake = [{ x: 16, y: 12 }, { x: 15, y: 12 }, { x: 14, y: 12 }]; apple = randomApple(); direction = { x: 1, y: 0 }; nextDirection = direction; score = 0; running = false; hud.setScore(score); bestElement.textContent = String(getBestScore('snake')).padStart(4, '0'); statusElement.textContent = 'PULSA UNA FLECHA'; draw();
+  clearInterval(timer); snake = [{ x: 16, y: 12 }, { x: 15, y: 12 }, { x: 14, y: 12 }]; apple = randomApple(); direction = { x: 1, y: 0 }; nextDirection = direction; score = 0; apples = 0; startedAt = 0; running = false; hud.setScore(score); bestElement.textContent = String(getBestScore('snake')).padStart(4, '0'); statusElement.textContent = 'PULSA UNA FLECHA'; draw();
 }
-function begin() { if (running) return; running = true; statusElement.textContent = 'EN JUEGO'; timer = setInterval(tick, 135); }
+function begin() { if (running) return; running = true; startedAt = Date.now(); statusElement.textContent = 'EN JUEGO'; timer = setInterval(tick, 135); }
 function tick() {
   direction = nextDirection;
   const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
@@ -38,10 +42,10 @@ function tick() {
   const hitSelf = snake.some(part => part.x === head.x && part.y === head.y);
   if (hitWall || hitSelf) return endGame();
   snake.unshift(head);
-  if (head.x === apple.x && head.y === apple.y) { score += 10; Audio.playSfx('eat'); hud.setScore(score); apple = randomApple(); if (score % 50 === 0) { Audio.playSfx('levelup'); clearInterval(timer); timer = setInterval(tick, Math.max(55, 135 - score / 4)); } } else snake.pop();
+  if (head.x === apple.x && head.y === apple.y) { score += 10; apples++; if (apples >= 20) unlockAchievement('snake-feast'); if (snake.length >= 30) unlockAchievement('snake-long'); Audio.playSfx('eat'); hud.setScore(score); apple = randomApple(); if (score % 50 === 0) { Audio.playSfx('levelup'); clearInterval(timer); timer = setInterval(tick, Math.max(55, 135 - score / 4)); } } else snake.pop();
   draw();
 }
-function endGame() { clearInterval(timer); running = false; const result = saveScore('snake', score, { bronze: 50, silver: 120, gold: 250 }); Wallet.add(Math.max(1, Math.floor(score / 20))); Audio.playSfx('coin'); Audio.playSfx('gameover'); bestElement.textContent = String(result.bestScore).padStart(4, '0'); statusElement.textContent = `GAME OVER / ${result.medal ? result.medal.toUpperCase() : 'SIN MEDALLA'}`; draw(); }
+function endGame() { clearInterval(timer); running = false; if (startedAt && Date.now() - startedAt >= 60000) unlockAchievement('snake-survivor'); const result = saveScore('snake', score, { bronze: 50, silver: 120, gold: 250 }); Wallet.add(Math.max(1, Math.floor(score / 20))); Audio.playSfx('coin'); Audio.playSfx('gameover'); bestElement.textContent = String(result.bestScore).padStart(4, '0'); statusElement.textContent = `GAME OVER / ${result.medal ? result.medal.toUpperCase() : 'SIN MEDALLA'}`; draw(); }
 function draw() {
   context.fillStyle = '#050717'; context.fillRect(0, 0, canvas.width, canvas.height);
   context.strokeStyle = 'rgba(35,231,215,.12)'; context.lineWidth = 1; for (let x = 0; x <= columns; x++) { context.beginPath(); context.moveTo(x * cell, 0); context.lineTo(x * cell, canvas.height); context.stroke(); } for (let y = 0; y <= rows; y++) { context.beginPath(); context.moveTo(0, y * cell); context.lineTo(canvas.width, y * cell); context.stroke(); }

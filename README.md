@@ -22,6 +22,16 @@ Luego visita `http://localhost:8000`.
 
 Los controles son las flechas del teclado. Cada partida actualiza su récord y puede otorgar monedas al wallet global.
 
+## Cuentas y progreso
+
+RetroGames funciona como invitado sin registro: las monedas, récords, skins y logros se guardan en `localStorage` y el jugador puede continuar jugando offline. Desde **PLAYER LOGIN** se puede crear una cuenta o iniciar sesión con Firebase Authentication (email y contraseña). Al entrar, el progreso local se fusiona con el documento `users/{uid}` de Firestore y los cambios posteriores se guardan en ambos sitios. Cerrar sesión vuelve al modo invitado sin borrar los datos locales.
+
+La `firebaseConfig` incluida es configuración pública de cliente, no un secreto. La seguridad real depende de las reglas de Firestore y de Authentication.
+
+## Trofeos y logros
+
+Cada juego tiene tres logros propios, con objetivos de bronce, plata y oro basados en acciones de juego además del puntaje. El botón `T` de cada tarjeta abre el detalle y muestra tanto los logros desbloqueados como los pendientes. Los desbloqueos se persisten en `localStorage` y se sincronizan con la cuenta Firebase cuando hay una sesión activa.
+
 ## Arquitectura
 
 ```text
@@ -36,6 +46,9 @@ shared/games-registry.js   Catálogo que consume el portal
 shared/hud.js              Contrato común para score y monedas
 shared/skins.js            Catálogo, compra y equipamiento de skins CSS
 shared/audio.js            SFX y música chiptune sintetizados con Web Audio
+shared/firebase-config.js  Configuración e inicialización del SDK Firebase CDN
+shared/auth.js             Registro, login, invitado y sincronización Firestore
+shared/achievements.js     Catálogo y persistencia de logros por juego
 assets/                    Recursos opcionales futuros
 ```
 

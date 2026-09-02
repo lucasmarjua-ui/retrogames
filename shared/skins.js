@@ -14,3 +14,4 @@ export function applySkin(id = read().equipped) { const skin = SKINS.find(item =
 export function buySkin(id) { const skin = SKINS.find(item => item.id === id); const state = read(); if (!skin || state.unlocked.includes(id)) return false; if (Wallet.get() < skin.cost) return false; Wallet.add(-skin.cost); state.unlocked.push(id); write(state); return true; }
 export function equipSkin(id) { const state = read(); if (!state.unlocked.includes(id)) return false; state.equipped = id; write(state); applySkin(id); return true; }
 applySkin();
+window.addEventListener('cloudsync', () => applySkin());
