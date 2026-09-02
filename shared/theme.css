@@ -81,6 +81,7 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .back-link { display: inline-flex; text-decoration: none; border: 3px solid var(--paper); padding: 12px; font-size: 9px; justify-content: center; }
 .back-link:hover { background: var(--pink); border-color: var(--pink); }
 .game-status { color: var(--pink); font-size: 10px; line-height: 1.8; min-height: 36px; }
+.impact-flash { animation: impact-flash .26s steps(2); }
 .action-button { border: 3px solid var(--ink); background: var(--yellow); box-shadow: 4px 4px 0 var(--pink); padding: 14px 12px; color: var(--ink); font-size: 10px; }
 .action-button:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--pink); }
 .cabinet-marquee { margin: 16px 0 0; border: 3px solid var(--yellow); background: var(--cabinet); color: var(--yellow); padding: 12px; text-align: center; box-shadow: 4px 4px 0 var(--pink); font-size: 11px; }
@@ -138,6 +139,7 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .insert-coin { color: var(--pink); animation: blink .8s steps(2) infinite; }
 
 @keyframes blink { 50% { opacity: .25; } }
+@keyframes impact-flash { 0%, 100% { border-color: var(--cyan); } 20%, 60% { border-color: var(--red); } }
 @media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 46px; } .game-layout { grid-template-columns: 1fr; } .game-panel { grid-template-columns: repeat(2, 1fr); } .back-link { grid-column: span 2; } }
 @media (max-width: 700px) { .skin-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .arcade-shell { width: min(100% - 24px, 1180px); padding-top: 18px; } .topbar { align-items: flex-start; flex-direction: column; } .game-grid { grid-template-columns: 1fr; } .game-panel { grid-template-columns: 1fr; } .back-link { grid-column: auto; } h1 { font-size: 34px; } .footer { flex-direction: column; gap: 12px; } .skin-grid { grid-template-columns: 1fr; } .slot-reels span { font-size: 11px; padding-left: 2px; padding-right: 2px; } }
