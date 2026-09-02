@@ -1,6 +1,23 @@
 # RetroGames
 
+[![Deploy to GitHub Pages](https://github.com/lucasmarjua-ui/retrogames/actions/workflows/deploy.yaml/badge.svg)](https://github.com/lucasmarjua-ui/retrogames/actions/workflows/deploy.yaml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Demo en vivo](https://img.shields.io/badge/demo-en%20vivo-brightgreen)](https://lucasmarjua-ui.github.io/retrogames/)
+![Sin dependencias](https://img.shields.io/badge/dependencias-cero-orange)
+
 RetroGames es un portal web estático inspirado en los salones recreativos de los años 80. Reúne juegos arcade hechos con HTML, CSS, JavaScript vanilla y Canvas API, con una identidad visual común de neón, tipografía pixel-art y scanlines CRT sutiles.
+
+**[▶ Jugar ahora](https://lucasmarjua-ui.github.io/retrogames/)**
+
+## Capturas
+
+| Portal principal | Tienda y tragaperras |
+| --- | --- |
+| ![Portal principal de RetroGames con la rejilla de juegos](screenshots/portal.png) | ![Tienda de skins y tragaperras](screenshots/tienda.png) |
+
+| Personaje personalizable | Ranking global |
+| --- | --- |
+| ![Modal de personalización del personaje](screenshots/personaje.png) | ![Modal de ranking global por juego](screenshots/ranking.png) |
 
 ## Jugar localmente
 
@@ -41,6 +58,10 @@ Cada jugador tiene un personaje personalizable (camisetas, gorros, gafas y acces
 
 El portal registra una racha diaria en `retrogames.streak` y entrega monedas al volver cada día, hasta un máximo de siete días de recompensa. La sección **TRAGAPERRAS** permite elegir cuánto apostar y girar tres carretes animados con premios por dos o tres símbolos iguales.
 
+## Ranking global y perfil de jugador
+
+El botón **RANKING GLOBAL** (junto al Hall of Fame) muestra el top 10 real de jugadores registrados por cada juego, leído en vivo desde una colección pública `leaderboards/{gameId}/entries` en Firestore; sin sesión iniciada se avisa de que hace falta una cuenta para aparecer en la lista. Cada jugador solo puede escribir su propia entrada (reglas de Firestore verificadas por `uid`), pero cualquier usuario autenticado puede leer el ranking completo. El botón **MI PERFIL** muestra nombre de usuario, fecha de registro, partidas totales, tiempo total jugado y el juego favorito de cada jugador, calculado a partir de `shared/stats.js` y sincronizado también con la cuenta Firebase.
+
 ## Arquitectura
 
 ```text
@@ -62,9 +83,8 @@ shared/achievements.js     Catálogo y persistencia de logros por juego
 shared/streak.js           Racha diaria y recompensa de monedas
 shared/slot-machine.js     Lógica de la tragaperras con apuesta variable
 shared/tutorial.js         Tutorial de controles por juego, una sola vez
-shared/leaderboard.js      Ranking global Firestore por juego
-shared/stats.js            Estadísticas locales de partidas y tiempo jugado
-shared/auth.js             Cuentas opcionales y sincronización Firestore
+shared/leaderboard.js      Envío y lectura del ranking global en Firestore
+shared/stats.js            Estadísticas de juego (partidas, tiempo, favorito)
 assets/                    Recursos opcionales (imagen de vista social, etc.)
 ```
 
@@ -95,7 +115,7 @@ El sitio está disponible en `https://lucasmarjua-ui.github.io/retrogames/`.
 
 ## Roadmap
 
-Ideas futuras: ranking global online entre jugadores registrados, perfil de jugador con estadísticas (partidas jugadas, tiempo total, juego favorito), soporte de PWA instalable, mando/gamepad y modo daltónico.
+Ideas futuras: soporte de PWA instalable, mando/gamepad, modo daltónico y volumen independiente de música/efectos.
 
 ## Licencia
 
