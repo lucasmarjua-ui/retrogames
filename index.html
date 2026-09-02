@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RetroGames: juegos arcade de los años 80.">
+  <title>RetroGames / Arcade Portal</title>
+  <link rel="stylesheet" href="./shared/theme.css">
+</head>
+<body>
+  <main class="arcade-shell">
+    <header class="topbar"><a class="brand" href="./index.html">RETROGAMES</a><div class="wallet"><span class="coin">¢</span><span><span id="wallet-count">0</span> MONEDAS</span></div></header>
+    <section class="hero"><div><span class="eyebrow">/// SALON 198X / PLAYER 01</span><h1>PLAY THE<br>CLASSICS.</h1><p class="hero-copy">Dos leyendas arcade. Una sola máquina. Tu mejor partida siempre queda encendida.</p></div><div class="hero-stat"><strong id="game-count">02</strong><span>JUEGOS EN CARTELERA</span></div></section>
+    <section><div class="section-heading"><h2>ELIGE TU JUEGO</h2><span>HIGH SCORE NEVER SLEEPS</span></div><div class="game-grid" id="game-grid"></div></section>
+    <footer class="footer"><span>RETROGAMES © 2026</span><span>BUILT FOR THE ARCADE GENERATION</span></footer>
+  </main>
+  <script type="module">
+    import { GAMES } from './shared/games-registry.js';
+    import { Wallet } from './shared/wallet.js';
+    import { getBestScore, getMedal, MEDAL_ICONS } from './shared/records.js';
+    const count = document.querySelector('#wallet-count');
+    const renderWallet = () => { count.textContent = Wallet.get(); };
+    renderWallet(); window.addEventListener('walletchange', renderWallet);
+    document.querySelector('#game-count').textContent = String(GAMES.length).padStart(2, '0');
+    document.querySelector('#game-grid').innerHTML = GAMES.map(game => {
+      const medal = getMedal(getBestScore(game.id), game.thresholds);
+      return `<a class="game-card" href="${game.path}"><div class="game-card-art ${game.artClass}"><div class="pixel-title">${game.title.toUpperCase()}</div></div><div class="game-card-info"><div><h3>${game.title}</h3><p>${game.description}</p></div><div class="medal ${medal || 'none'}">${medal ? MEDAL_ICONS[medal] : '—'}<small>${medal || 'SIN RECORD'}</small></div></div></a>`;
+    }).join('');
+  </script>
+</body>
+</html>
