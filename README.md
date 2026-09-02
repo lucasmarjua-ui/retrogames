@@ -19,6 +19,7 @@ Luego visita `http://localhost:8000`.
 - **Tetris**: siete piezas clásicas, niveles y líneas puntuadas.
 - **Breakout**: pala, bloques de colores, rebotes y vidas limitadas.
 - **Space Invaders**: oleadas, disparos enemigos y defensa horizontal.
+- **Asteroids**: nave con inercia, asteroides divisibles y oleadas crecientes.
 
 Los controles son las flechas del teclado. Cada partida actualiza su récord y puede otorgar monedas al wallet global.
 
@@ -31,6 +32,10 @@ La `firebaseConfig` incluida es configuración pública de cliente, no un secret
 ## Trofeos y logros
 
 Cada juego tiene tres logros propios, con objetivos de bronce, plata y oro basados en acciones de juego además del puntaje. El botón `T` de cada tarjeta abre el detalle y muestra tanto los logros desbloqueados como los pendientes. Los desbloqueos se persisten en `localStorage` y se sincronizan con la cuenta Firebase cuando hay una sesión activa.
+
+## Racha y tragaperras
+
+El portal registra una racha diaria en `retrogames.streak` y entrega monedas al volver cada día, hasta un máximo de siete días de recompensa. La sección **TRAGAPERRAS** permite gastar monedas en tiradas con premios por dos o tres símbolos iguales.
 
 ## Arquitectura
 
@@ -49,6 +54,10 @@ shared/audio.js            SFX y música chiptune sintetizados con Web Audio
 shared/firebase-config.js  Configuración e inicialización del SDK Firebase CDN
 shared/auth.js             Registro, login, invitado y sincronización Firestore
 shared/achievements.js     Catálogo y persistencia de logros por juego
+shared/streak.js           Racha diaria y recompensa de monedas
+shared/slot-machine.js     Lógica de la tragaperras
+shared/tutorial.js         Tutorial de controles por juego, una sola vez
+about.html                 Página de información del proyecto
 assets/                    Recursos opcionales futuros
 ```
 

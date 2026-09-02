@@ -25,6 +25,11 @@ export const ACHIEVEMENTS = {
     { id: 'invaders-first-wave', medal: 'bronze', name: 'Primera defensa', description: 'Destruye 10 invasores.' },
     { id: 'invaders-sharpshooter', medal: 'silver', name: 'Tirador certero', description: 'Consigue 15 impactos seguidos.' },
     { id: 'invaders-earth', medal: 'gold', name: 'Defensor de la Tierra', description: 'Supera una oleada sin perder vidas.' }
+  ],
+  asteroids: [
+    { id: 'asteroids-wave', medal: 'bronze', name: 'Primera oleada', description: 'Sobrevive y limpia la primera oleada.' },
+    { id: 'asteroids-hunter', medal: 'silver', name: 'Cazador espacial', description: 'Destruye asteroides sin perder una vida.' },
+    { id: 'asteroids-five', medal: 'gold', name: 'Cinco oleadas', description: 'Alcanza la oleada 5.' }
   ]
 };
 function read() { try { const value = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(value) ? value : []; } catch { return []; } }

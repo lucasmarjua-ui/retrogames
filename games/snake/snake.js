@@ -5,6 +5,7 @@ import { Audio } from '../../shared/audio.js';
 import '../../shared/skins.js';
 import '../../shared/auth.js';
 import { unlockAchievement } from '../../shared/achievements.js';
+import { showTutorialOnce } from '../../shared/tutorial.js';
 
 const canvas = document.querySelector('#game');
 const context = canvas.getContext('2d');
@@ -22,6 +23,7 @@ let nextDirection;
 let score;
 let timer;
 let running;
+let paused;
 let startedAt;
 let apples;
 
@@ -32,10 +34,11 @@ function randomApple() {
   return candidate;
 }
 function reset() {
-  clearInterval(timer); snake = [{ x: 16, y: 12 }, { x: 15, y: 12 }, { x: 14, y: 12 }]; apple = randomApple(); direction = { x: 1, y: 0 }; nextDirection = direction; score = 0; apples = 0; startedAt = 0; running = false; hud.setScore(score); bestElement.textContent = String(getBestScore('snake')).padStart(4, '0'); statusElement.textContent = 'PULSA UNA FLECHA'; draw();
+  clearInterval(timer); snake = [{ x: 16, y: 12 }, { x: 15, y: 12 }, { x: 14, y: 12 }]; apple = randomApple(); direction = { x: 1, y: 0 }; nextDirection = direction; score = 0; apples = 0; startedAt = 0; running = false; paused = false; hud.setScore(score); bestElement.textContent = String(getBestScore('snake')).padStart(4, '0'); statusElement.textContent = 'PULSA UNA FLECHA'; draw();
 }
 function begin() { if (running) return; running = true; startedAt = Date.now(); statusElement.textContent = 'EN JUEGO'; timer = setInterval(tick, 135); }
 function tick() {
+  if (paused) return;
   direction = nextDirection;
   const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
   const hitWall = head.x < 0 || head.x >= columns || head.y < 0 || head.y >= rows;
@@ -52,6 +55,6 @@ function draw() {
   context.fillStyle = '#ff4f9a'; context.fillRect(apple.x * cell + 5, apple.y * cell + 5, cell - 10, cell - 10); context.fillStyle = '#62e889'; snake.forEach((part, index) => { context.fillStyle = index === 0 ? '#ffe66d' : '#62e889'; context.fillRect(part.x * cell + 3, part.y * cell + 3, cell - 6, cell - 6); });
   if (!running && score === 0) { context.fillStyle = '#fff4d6'; context.font = '16px "Press Start 2P"'; context.textAlign = 'center'; context.fillText('READY?', canvas.width / 2, canvas.height / 2); }
 }
-window.addEventListener('keydown', event => { const keys = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }; const candidate = keys[event.key]; if (!candidate) return; event.preventDefault(); if (candidate.x + direction.x !== 0 || candidate.y + direction.y !== 0) nextDirection = candidate; begin(); });
+window.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); if (running) { paused = !paused; statusElement.textContent = paused ? 'PAUSA' : 'EN JUEGO'; } return; } const keys = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }; const candidate = keys[event.key]; if (!candidate) return; event.preventDefault(); if (candidate.x + direction.x !== 0 || candidate.y + direction.y !== 0) nextDirection = candidate; begin(); });
 document.querySelector('#restart').addEventListener('click', reset);
-reset();
+showTutorialOnce('snake', '<p>FLECHAS: MOVER<br>ESC: PAUSA</p>'); reset();

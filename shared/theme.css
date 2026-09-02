@@ -55,6 +55,7 @@ h1 { max-width: 720px; margin: 0; font-size: clamp(33px, 6vw, 75px); line-height
 .game-card-art.tetris-art { background: var(--yellow); }
 .game-card-art.breakout-art { background: var(--orange); }
 .game-card-art.invaders-art { background: var(--green); }
+.game-card-art.asteroids-art { background: var(--ink-soft); }
 .game-card-art::after { content: 'INSERT COIN'; position: absolute; bottom: 15px; font-size: 10px; color: var(--ink); animation: blink 1.3s steps(2) infinite; }
 .game-card-info { padding: 22px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
 .game-card h3 { margin: 0 0 10px; font-size: 18px; }
@@ -110,6 +111,22 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .achievement span { font-size: 8px; }
 .achievement.locked { filter: grayscale(1); opacity: .45; }
 .achievement.unlocked strong { color: var(--pink); }
+.slot-section, .about-content { margin-top: 58px; border-top: 3px solid var(--ink); padding-top: 26px; }
+.slot-machine { width: min(560px, 100%); margin: 0 auto; padding: 24px; border: 5px solid var(--ink); background: var(--pink); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
+.slot-reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+.slot-reels span { min-width: 0; padding: 20px 8px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font-size: 16px; overflow-wrap: anywhere; }
+.slot-machine p { min-height: 18px; font-size: 9px; line-height: 1.7; }
+.streak-notice { position: fixed; left: 50%; bottom: 24px; z-index: 35; transform: translate(-50%, 140%); border: 3px solid var(--ink); padding: 14px 18px; background: var(--yellow); box-shadow: 5px 5px 0 var(--pink); font-size: 10px; transition: transform .25s ease; }
+.streak-notice.visible { transform: translate(-50%, 0); }
+.tutorial-overlay { position: fixed; inset: 0; z-index: 45; display: grid; place-items: center; padding: 20px; background: rgba(17,20,43,.9); }
+.tutorial-panel { width: min(460px, 100%); border: 5px solid var(--cyan); padding: 28px; background: var(--paper); color: var(--ink); box-shadow: 9px 9px 0 var(--pink); text-align: center; }
+.tutorial-panel h2 { margin: 0 0 18px; font-size: 18px; }
+.tutorial-panel div { font-size: 10px; line-height: 2; margin-bottom: 22px; }
+.about-content { max-width: 760px; margin-left: auto; margin-right: auto; line-height: 2; }
+.about-content h1 { margin: 24px 0; }
+.about-content h2 { margin-top: 35px; font-size: 15px; }
+.about-content p, .about-content li { font-size: 10px; }
+.about-content a { color: var(--pink); }
 .hof-table { width: 100%; border-collapse: collapse; font-size: 9px; background: var(--paper); }
 .hof-table th, .hof-table td { border: 2px solid var(--ink); padding: 13px 10px; text-align: left; }
 .hof-table th { background: var(--yellow); }
@@ -123,4 +140,4 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 @keyframes blink { 50% { opacity: .25; } }
 @media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 46px; } .game-layout { grid-template-columns: 1fr; } .game-panel { grid-template-columns: repeat(2, 1fr); } .back-link { grid-column: span 2; } }
 @media (max-width: 700px) { .skin-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .arcade-shell { width: min(100% - 24px, 1180px); padding-top: 18px; } .topbar { align-items: flex-start; flex-direction: column; } .game-grid { grid-template-columns: 1fr; } .game-panel { grid-template-columns: 1fr; } .back-link { grid-column: auto; } h1 { font-size: 34px; } .footer { flex-direction: column; gap: 12px; } .skin-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .arcade-shell { width: min(100% - 24px, 1180px); padding-top: 18px; } .topbar { align-items: flex-start; flex-direction: column; } .game-grid { grid-template-columns: 1fr; } .game-panel { grid-template-columns: 1fr; } .back-link { grid-column: auto; } h1 { font-size: 34px; } .footer { flex-direction: column; gap: 12px; } .skin-grid { grid-template-columns: 1fr; } .slot-reels span { font-size: 11px; padding-left: 2px; padding-right: 2px; } }

@@ -1,7 +1,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyC9x62nRhmnOYs1faz8DB0p6uRzdtNrJk',
+  apiKey: 'AIzaSyC9x62nRhmnOYs1fazs8DB0p6uRzdtNrJk',
   authDomain: 'retrogames-portal.firebaseapp.com',
   projectId: 'retrogames-portal',
   storageBucket: 'retrogames-portal.firebasestorage.app',

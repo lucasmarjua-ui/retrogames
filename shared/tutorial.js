@@ -1,0 +1,2 @@
+const PREFIX = 'retrogames.tutorial.';
+export function showTutorialOnce(gameId, controlsHtml) { const key = `${PREFIX}${gameId}`; if (localStorage.getItem(key)) return; const overlay = document.createElement('div'); overlay.className = 'tutorial-overlay'; overlay.innerHTML = `<section class="tutorial-panel"><h2>COMO JUGAR</h2><div>${controlsHtml}</div><button class="action-button" type="button">ENTENDIDO</button></section>`; document.body.append(overlay); overlay.querySelector('button').addEventListener('click', () => { localStorage.setItem(key, '1'); overlay.remove(); }); }

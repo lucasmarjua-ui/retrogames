@@ -6,6 +6,8 @@ export const SKINS = [
   { id: 'neon-pink', name: 'Neon rosa', cost: 12, vars: { '--cyan': '#7df9ff', '--pink': '#ff2bd6', '--yellow': '#fff36a', '--paper': '#fff0fb', '--ink': '#25102b', '--orange': '#ff704d', '--green': '#75ffb0' } },
   { id: 'synthwave', name: 'Synthwave morado-cian', cost: 20, vars: { '--cyan': '#00f0ff', '--pink': '#b44cff', '--yellow': '#f7ff00', '--paper': '#f2eaff', '--ink': '#160d31', '--orange': '#ff7b00', '--green': '#52ffcf' } },
   { id: 'amber', name: 'Ambar retro', cost: 8, vars: { '--cyan': '#ffc857', '--pink': '#e76f51', '--yellow': '#ffe29a', '--paper': '#fff1c1', '--ink': '#2b2118', '--orange': '#d95d39', '--green': '#8ac926' } }
+  ,{ id: 'wood', name: 'Madera clasica', cost: 25, vars: { '--cyan': '#f4c95d', '--pink': '#c84b31', '--yellow': '#ffe3a1', '--paper': '#f7e4bd', '--ink': '#3a2118', '--orange': '#b96b35', '--green': '#6f9b55', '--cabinet': '#6b321f', '--canvas-bg': '#20120e' } }
+  ,{ id: 'terminal', name: 'Terminal verde', cost: 30, vars: { '--cyan': '#65ff7a', '--pink': '#2dcc57', '--yellow': '#b5ff91', '--paper': '#d8ffcf', '--ink': '#062b12', '--orange': '#39c95b', '--green': '#8dff9e', '--cabinet': '#0b401d', '--canvas-bg': '#031108' } }
 ];
 function read() { try { return JSON.parse(localStorage.getItem(KEY) || '{"unlocked":["classic"],"equipped":"classic"}'); } catch { return { unlocked: ['classic'], equipped: 'classic' }; } }
 function write(data) { localStorage.setItem(KEY, JSON.stringify(data)); window.dispatchEvent(new CustomEvent('skinchange', { detail: data })); }
