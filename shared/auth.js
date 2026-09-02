@@ -4,7 +4,7 @@ import { firebaseApp } from './firebase-config.js';
 
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
-const DATA_KEYS = ['retrogames.wallet', 'retrogames.game-data', 'retrogames.unlocks', 'retrogames.achievements', 'retrogames.streak', 'retrogames.character'];
+const DATA_KEYS = ['retrogames.wallet', 'retrogames.game-data', 'retrogames.unlocks', 'retrogames.achievements', 'retrogames.streak', 'retrogames.character', 'retrogames.stats'];
 const USERNAME_PATTERN = /^[a-zA-Z0-9_]{3,16}$/;
 let currentUser = null;
 let listeners = [];
@@ -25,11 +25,11 @@ function mergeData(local, cloud) {
   const localWallet = Number.parseInt(local['retrogames.wallet'] || '0', 10) || 0;
   const cloudWallet = Number.parseInt(cloud['retrogames.wallet'] || '0', 10) || 0;
   if (local['retrogames.wallet'] || cloud['retrogames.wallet']) merged['retrogames.wallet'] = String(Math.max(localWallet, cloudWallet));
-  ['retrogames.game-data', 'retrogames.unlocks', 'retrogames.achievements', 'retrogames.streak', 'retrogames.character'].forEach(key => {
+  ['retrogames.game-data', 'retrogames.unlocks', 'retrogames.achievements', 'retrogames.streak', 'retrogames.character', 'retrogames.stats'].forEach(key => {
     try {
       const localValue = JSON.parse(local[key] || '{}');
       const cloudValue = JSON.parse(cloud[key] || '{}');
-      merged[key] = JSON.stringify(key === 'retrogames.game-data' ? mergeGameData(localValue, cloudValue) : key === 'retrogames.unlocks' ? mergeUnlocks(localValue, cloudValue) : key === 'retrogames.achievements' ? mergeAchievements(localValue, cloudValue) : key === 'retrogames.streak' ? mergeStreak(localValue, cloudValue) : mergeCharacter(localValue, cloudValue));
+      merged[key] = JSON.stringify(key === 'retrogames.game-data' ? mergeGameData(localValue, cloudValue) : key === 'retrogames.unlocks' ? mergeUnlocks(localValue, cloudValue) : key === 'retrogames.achievements' ? mergeAchievements(localValue, cloudValue) : key === 'retrogames.streak' ? mergeStreak(localValue, cloudValue) : key === 'retrogames.character' ? mergeCharacter(localValue, cloudValue) : mergeStats(localValue, cloudValue));
     } catch { /* Preserve the valid side if old local data is malformed. */ }
   });
   return merged;
@@ -39,6 +39,7 @@ function mergeUnlocks(local, cloud) { return { unlocked: [...new Set([...(cloud.
 function mergeAchievements(local, cloud) { return [...new Set([...(Array.isArray(cloud) ? cloud : []), ...(Array.isArray(local) ? local : [])])]; }
 function mergeStreak(local, cloud) { return Date.parse(local.date || '') >= Date.parse(cloud.date || '') ? local : cloud; }
 function mergeCharacter(local, cloud) { return { owned: [...new Set([...(cloud.owned || []), ...(local.owned || [])])], equipped: { ...(cloud.equipped || {}), ...(local.equipped || {}) } }; }
+function mergeStats(local, cloud) { const result = { totalGames: (local.totalGames || 0) + (cloud.totalGames || 0), totalTimeMs: (local.totalTimeMs || 0) + (cloud.totalTimeMs || 0), perGame: { ...(cloud.perGame || {}) } }; Object.entries(local.perGame || {}).forEach(([gameId, values]) => { result.perGame[gameId] = { playCount: (result.perGame[gameId]?.playCount || 0) + (values.playCount || 0), timeMs: (result.perGame[gameId]?.timeMs || 0) + (values.timeMs || 0) }; }); return result; }
 async function loadUserData(user) { const local = readLocal(); const hasLocalProgress = Object.keys(local).some(key => key !== 'retrogames.achievements' || local[key] !== '[]'); const snapshot = await getDoc(doc(db, 'users', user.uid)); if (!snapshot.exists()) { await saveUserData(user); return; } const cloud = snapshot.data().data || {}; const keepLocal = hasLocalProgress && window.confirm('Conservar y fusionar el progreso local con tu cuenta?'); const merged = keepLocal ? mergeData(local, cloud) : cloud; writeLocal(merged); window.dispatchEvent(new CustomEvent('cloudsync', { detail: merged })); if (keepLocal) await setDoc(doc(db, 'users', user.uid), { data: merged, username: user.displayName }, { merge: true }); }
 async function saveUserData(user = currentUser) { if (!user || syncing) return; syncing = true; try { await setDoc(doc(db, 'users', user.uid), { data: readLocal(), username: user.displayName, updatedAt: Date.now() }, { merge: true }); } catch (error) { console.warn('No se pudo sincronizar RetroGames:', error); } finally { syncing = false; } }
 export async function registerUser(username, password) {
@@ -59,4 +60,5 @@ window.addEventListener('walletchange', () => saveUserData());
 window.addEventListener('storagechange', () => saveUserData());
 window.addEventListener('skinchange', () => saveUserData());
 window.addEventListener('achievementchange', () => saveUserData());
+window.addEventListener('statschange', () => saveUserData());
 onAuthStateChanged(auth, async user => { currentUser = user; if (user) { try { await loadUserData(user); } catch (error) { console.warn('No se pudo cargar el progreso:', error); } } listeners.forEach(listener => listener(currentUser)); });

@@ -5,6 +5,8 @@ import '../../shared/skins.js';
 import '../../shared/auth.js';
 import { unlockAchievement } from '../../shared/achievements.js';
 import { showTutorialOnce } from '../../shared/tutorial.js';
+import { submitScore } from '../../shared/leaderboard.js';
+import { recordGameStart, recordGameEnd } from '../../shared/stats.js';
 const layouts = [['1111111111','1111111111','1111111111','1111111111','1111111111'],['1100110011','1111111111','0111111110','1111111111','1100110011','1111111111'],['1010101010','1111111111','1111111111','0111111110','1111111111','1010101010','1111111111']];
 const colors = ['#f04462','#ff8b3d','#ffe66d','#62e889','#23e7d7'];
 	const canvas = document.querySelector('#game'), ctx = canvas.getContext('2d');
@@ -12,8 +14,8 @@ const colors = ['#f04462','#ff8b3d','#ffe66d','#62e889','#23e7d7'];
 	let paddle, balls, bricks, powerups, score, lives, running, frame, destroyed, rebounds, paused, level, layoutIndex, combo, active, lastTime;
 	function buildLevel() { const pattern = layouts[layoutIndex % layouts.length]; bricks = pattern.map((row, y) => [...row].map((cell, x) => cell === '1' ? { x:28+x*60, y:45+y*25, w:52, h:15, value:(pattern.length-y)*10, color:colors[y%colors.length], hits:level >= 3 && y < 2 ? 3 : level >= 2 && y % 2 === 0 ? 2 : 1 } : null)); }
 	function newBall(stuck = false) { return { x:paddle.x+paddle.w/2, y:paddle.y-10, dx:(Math.random()>.5?1:-1)*3, dy:-4, r:8, stuck }; }
-	function reset() { cancelAnimationFrame(frame); paddle={x:270,y:450,w:100,h:13}; balls=[newBall()]; powerups=[]; score=0;destroyed=0;rebounds=0;lives=3;level=1;layoutIndex=0;combo=0;active={wideUntil:0,slowUntil:0,stickyUntil:0,sticky:false};paused=false;running=false;buildLevel();draw();status.textContent='PULSA UNA FLECHA O MUEVE EL RATON'; }
-function end(won=false) { running=false;cancelAnimationFrame(frame);saveScore('breakout',score,{bronze:300,silver:900,gold:2200});hud.awardCoins(score,180);status.textContent=won?'TABLERO LIMPIO':'GAME OVER';Audio.playSfx(won?'levelup':'gameover');draw(); }
+	function reset() { cancelAnimationFrame(frame); recordGameStart('breakout'); paddle={x:270,y:450,w:100,h:13}; balls=[newBall()]; powerups=[]; score=0;destroyed=0;rebounds=0;lives=3;level=1;layoutIndex=0;combo=0;active={wideUntil:0,slowUntil:0,stickyUntil:0,sticky:false};paused=false;running=false;buildLevel();draw();status.textContent='PULSA UNA FLECHA O MUEVE EL RATON'; }
+ function end(won=false) { running=false;cancelAnimationFrame(frame);saveScore('breakout',score,{bronze:300,silver:900,gold:2200});submitScore('breakout',score).catch(() => {});recordGameEnd('breakout');hud.awardCoins(score,180);status.textContent=won?'TABLERO LIMPIO':'GAME OVER';Audio.playSfx(won?'levelup':'gameover');draw(); }
 function activate(type) { const now=Date.now();if(type==='wide')active.wideUntil=now+9000;if(type==='slow')active.slowUntil=now+8000;if(type==='sticky'){active.stickyUntil=now+9000;active.sticky=true;}if(type==='multi'&&balls[0])balls.push({...balls[0],dx:-balls[0].dx});status.textContent=`POWER ${type.toUpperCase()}`;Audio.playSfx('levelup'); }
 function dropPowerup(brick) { if(Math.random()>.1)return;const types=[['wide','#23e7d7','W'],['slow','#62e889','S'],['multi','#ff4f9a','M'],['sticky','#ffe66d','G']];const [type,color,label]=types[Math.floor(Math.random()*types.length)];powerups.push({x:brick.x+brick.w/2,y:brick.y,type,color,label}); }
 function hitBrick(ball) { for(const row of bricks)for(let i=0;i<row.length;i++){const brick=row[i];if(brick&&ball.x+ball.r>brick.x&&ball.x-ball.r<brick.x+brick.w&&ball.y+ball.r>brick.y&&ball.y-ball.r<brick.y+brick.h){brick.hits--;ball.dy*=-1;if(brick.hits<=0){row[i]=null;destroyed++;combo++;score+=brick.value*combo;dropPowerup(brick);if(destroyed>=10)unlockAchievement('breakout-bricks');status.textContent=combo>1?`COMBO x${combo}`:'BLOQUE ROTO';}else status.textContent=`RESISTENTE ${brick.hits}`;Audio.playSfx('eat');return true;}}return false; }

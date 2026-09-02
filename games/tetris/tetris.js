@@ -5,6 +5,8 @@ import '../../shared/skins.js';
 import '../../shared/auth.js';
 import { unlockAchievement } from '../../shared/achievements.js';
 import { showTutorialOnce } from '../../shared/tutorial.js';
+import { submitScore } from '../../shared/leaderboard.js';
+import { recordGameStart, recordGameEnd } from '../../shared/stats.js';
 
 const canvas = document.querySelector('#game');
 const ctx = canvas.getContext('2d');
@@ -26,7 +28,7 @@ function clearLines() { let lines = 0; board = board.filter(row => { if (row.eve
 function draw() { ctx.fillStyle = '#050717'; ctx.fillRect(0,0,canvas.width,canvas.height); [...board.map((row,y) => row.map((color,x) => ({color,x,y}))), ...piece.shape.flatMap((row,y) => row.map((cell,x) => cell ? {color:piece.color,x:piece.x+x,y:piece.y+y} : null))].filter(Boolean).forEach(cell => { ctx.fillStyle = cell.color; ctx.fillRect(cell.x*size+1, cell.y*size+1, size-2, size-2); }); hud.setScore(score); document.querySelector('#best').textContent = String(best()).padStart(4,'0'); }
 function drop() { if (!running || paused) return; piece.y++; if (collision()) { piece.y--; merge(); clearLines(); spawn(); } draw(); }
 function start() { if (running) return; running = true; status.textContent = 'EN JUEGO'; dropTimer = setInterval(drop, Math.max(100, 650 - level * 45)); }
-function end() { running = false; clearInterval(dropTimer); saveScore('tetris', score, {bronze:500,silver:1500,gold:4000}); hud.awardCoins(score, 250); status.textContent = 'GAME OVER'; Audio.playSfx('gameover'); }
-function reset() { clearInterval(dropTimer); board = Array.from({length:H}, () => Array(W).fill('')); score = 0; level = 1; linesCleared = 0; running = false; paused = false; spawn(); status.textContent = 'PULSA UNA FLECHA'; draw(); }
+function end() { running = false; clearInterval(dropTimer); saveScore('tetris', score, {bronze:500,silver:1500,gold:4000}); submitScore('tetris', score).catch(() => {}); recordGameEnd('tetris'); hud.awardCoins(score, 250); status.textContent = 'GAME OVER'; Audio.playSfx('gameover'); }
+function reset() { clearInterval(dropTimer); recordGameStart('tetris'); board = Array.from({length:H}, () => Array(W).fill('')); score = 0; level = 1; linesCleared = 0; running = false; paused = false; spawn(); status.textContent = 'PULSA UNA FLECHA'; draw(); }
 document.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); if (running) { paused = !paused; status.textContent = paused ? 'PAUSA' : 'EN JUEGO'; } return; } if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(event.key)) return; event.preventDefault(); start(); if (event.key === 'ArrowLeft') { piece.x--; if (collision()) piece.x++; } if (event.key === 'ArrowRight') { piece.x++; if (collision()) piece.x--; } if (event.key === 'ArrowUp') { const old = piece.shape; piece.shape = rotate(piece.shape); if (collision()) piece.shape = old; } if (event.key === 'ArrowDown') drop(); if (event.key === ' ') while (!collision()) piece.y++; piece.y--; draw(); });
 document.querySelector('#restart').addEventListener('click', reset); showTutorialOnce('tetris', '<p>FLECHAS: MOVER Y GIRAR<br>ESPACIO: CAIDA RAPIDA<br>ESC: PAUSA</p>'); reset();
