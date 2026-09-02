@@ -116,7 +116,18 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .slot-machine { width: min(560px, 100%); margin: 0 auto; padding: 24px; border: 5px solid var(--ink); background: var(--pink); box-shadow: 8px 8px 0 var(--ink); text-align: center; }
 .slot-reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
 .slot-reels span { min-width: 0; padding: 20px 8px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font-size: 16px; overflow-wrap: anywhere; }
+.slot-reels span.winner { animation: slot-winner .55s steps(2) infinite; box-shadow: 0 0 18px var(--yellow); }
+.slot-machine.spinning .slot-reels span { animation: slot-roll .12s linear infinite; }
+.slot-reels span.stopped { animation: none; }
 .slot-machine p { min-height: 18px; font-size: 9px; line-height: 1.7; }
+.slot-bets { display: flex; justify-content: center; gap: 8px; margin: 14px 0 8px; }
+.slot-bets button { border: 3px solid var(--ink); background: var(--paper); color: var(--ink); padding: 9px 11px; font: inherit; font-size: 9px; }
+.slot-bets button.selected { background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); }
+.slot-bets button:disabled, .slot-actions button:disabled { cursor: default; opacity: .45; }
+.slot-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.slot-actions .action-button, .slot-actions .portal-button { min-width: 150px; }
+.slot-win { color: var(--green); animation: slot-reveal .35s ease-out; }
+.slot-lose { color: var(--ink); }
 .streak-notice { position: fixed; left: 50%; bottom: 24px; z-index: 35; transform: translate(-50%, 140%); border: 3px solid var(--ink); padding: 14px 18px; background: var(--yellow); box-shadow: 5px 5px 0 var(--pink); font-size: 10px; transition: transform .25s ease; }
 .streak-notice.visible { transform: translate(-50%, 0); }
 .tutorial-overlay { position: fixed; inset: 0; z-index: 45; display: grid; place-items: center; padding: 20px; background: rgba(17,20,43,.9); }
@@ -139,6 +150,9 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .insert-coin { color: var(--pink); animation: blink .8s steps(2) infinite; }
 
 @keyframes blink { 50% { opacity: .25; } }
+@keyframes slot-roll { 50% { transform: translateY(3px); filter: brightness(1.5); } }
+@keyframes slot-winner { 50% { transform: scale(1.06); background: var(--yellow); } }
+@keyframes slot-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes impact-flash { 0%, 100% { border-color: var(--cyan); } 20%, 60% { border-color: var(--red); } }
 @media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 46px; } .game-layout { grid-template-columns: 1fr; } .game-panel { grid-template-columns: repeat(2, 1fr); } .back-link { grid-column: span 2; } }
 @media (max-width: 700px) { .skin-grid { grid-template-columns: repeat(2, 1fr); } }
