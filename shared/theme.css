@@ -11,6 +11,8 @@
   --orange: #ff8b3d;
   --red: #f04462;
   --green: #62e889;
+  --cabinet: #2a2e58;
+  --canvas-bg: #050717;
   --line: rgba(17, 20, 43, .18);
   --shadow: 0 7px 0 var(--ink);
   font-family: 'Press Start 2P', monospace;
@@ -27,6 +29,9 @@ button { cursor: pointer; }
 a { color: inherit; }
 
 .arcade-shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 48px; position: relative; z-index: 1; }
+.arcade-shell::before, .arcade-shell::after { content: ''; position: absolute; width: 13px; height: 13px; border: 3px solid var(--yellow); border-radius: 50%; background: var(--pink); box-shadow: 1px 1px 0 var(--ink); top: 14px; z-index: 2; }
+.arcade-shell::before { left: 10px; }
+.arcade-shell::after { right: 10px; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 3px solid var(--ink); padding: 8px 0 22px; }
 .brand { text-decoration: none; font-size: clamp(16px, 2vw, 25px); text-shadow: 3px 3px 0 var(--pink); }
 .wallet { display: inline-flex; align-items: center; gap: 12px; background: var(--yellow); padding: 12px 16px; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); font-size: 12px; }
@@ -46,6 +51,9 @@ h1 { max-width: 720px; margin: 0; font-size: clamp(33px, 6vw, 75px); line-height
 .game-card-art { min-height: 205px; display: grid; place-items: center; position: relative; overflow: hidden; border-bottom: 3px solid var(--ink); }
 .game-card-art.snake-art { background: var(--cyan); }
 .game-card-art.pacman-art { background: var(--pink); }
+.game-card-art.tetris-art { background: var(--yellow); }
+.game-card-art.breakout-art { background: var(--orange); }
+.game-card-art.invaders-art { background: var(--green); }
 .game-card-art::after { content: 'INSERT COIN'; position: absolute; bottom: 15px; font-size: 10px; color: var(--ink); animation: blink 1.3s steps(2) infinite; }
 .game-card-info { padding: 22px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
 .game-card h3 { margin: 0 0 10px; font-size: 18px; }
@@ -61,8 +69,8 @@ h1 { max-width: 720px; margin: 0; font-size: clamp(33px, 6vw, 75px); line-height
 .game-page .topbar { border-color: var(--cyan); }
 .game-page .brand, .game-page .back-link { color: var(--paper); }
 .game-layout { padding-top: 32px; display: grid; grid-template-columns: minmax(0, 760px) 240px; gap: 26px; align-items: start; }
-.canvas-frame { border: 5px solid var(--cyan); background: #050717; box-shadow: 8px 8px 0 var(--pink); padding: 9px; }
-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; background: #050717; }
+.canvas-frame { border: 5px solid var(--cyan); background: var(--canvas-bg); box-shadow: 8px 8px 0 var(--pink); padding: 9px; }
+canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; background: var(--canvas-bg); }
 .game-panel { display: grid; gap: 16px; }
 .panel-block { border: 3px solid var(--paper); padding: 17px; background: var(--ink-soft); }
 .panel-label { color: var(--cyan); font-size: 9px; margin-bottom: 13px; display: block; }
@@ -73,7 +81,29 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .game-status { color: var(--pink); font-size: 10px; line-height: 1.8; min-height: 36px; }
 .action-button { border: 3px solid var(--ink); background: var(--yellow); box-shadow: 4px 4px 0 var(--pink); padding: 14px 12px; color: var(--ink); font-size: 10px; }
 .action-button:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--pink); }
+.cabinet-marquee { margin: 16px 0 0; border: 3px solid var(--yellow); background: var(--cabinet); color: var(--yellow); padding: 12px; text-align: center; box-shadow: 4px 4px 0 var(--pink); font-size: 11px; }
+.skin-shop, .hall-of-fame { margin-top: 58px; border-top: 3px solid var(--ink); padding-top: 26px; }
+.skin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.skin-card { border: 3px solid var(--ink); padding: 15px; background: var(--paper); box-shadow: 4px 4px 0 var(--ink); }
+.skin-swatch { height: 46px; margin-bottom: 13px; border: 3px solid var(--ink); background: var(--skin-accent, var(--cyan)); box-shadow: inset 0 -12px var(--skin-secondary, var(--pink)); }
+.skin-card h3 { font-size: 11px; line-height: 1.5; margin: 0 0 10px; }
+.skin-card p { font-size: 8px; line-height: 1.8; min-height: 30px; }
+.skin-card button { width: 100%; border: 3px solid var(--ink); background: var(--yellow); padding: 10px 6px; font-size: 8px; }
+.skin-card button:disabled { cursor: default; opacity: .55; }
+.portal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.portal-button { border: 3px solid var(--ink); background: var(--cyan); padding: 12px 14px; color: var(--ink); font-size: 9px; text-decoration: none; box-shadow: 4px 4px 0 var(--ink); }
+.portal-button:hover { background: var(--pink); }
+.hof-table { width: 100%; border-collapse: collapse; font-size: 9px; background: var(--paper); }
+.hof-table th, .hof-table td { border: 2px solid var(--ink); padding: 13px 10px; text-align: left; }
+.hof-table th { background: var(--yellow); }
+.attract-overlay { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 24px; background: rgba(17, 20, 43, .94); color: var(--paper); }
+.attract-overlay[hidden] { display: none; }
+.attract-screen { width: min(900px, 100%); border: 5px solid var(--cyan); padding: clamp(24px, 6vw, 60px); text-align: center; box-shadow: 12px 12px 0 var(--pink); background: var(--ink-soft); }
+.attract-screen h2 { font-size: clamp(20px, 4vw, 42px); color: var(--yellow); line-height: 1.5; margin: 0 0 22px; }
+.attract-screen p { font-size: 10px; line-height: 2; }
+.insert-coin { color: var(--pink); animation: blink .8s steps(2) infinite; }
 
 @keyframes blink { 50% { opacity: .25; } }
 @media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 46px; } .game-layout { grid-template-columns: 1fr; } .game-panel { grid-template-columns: repeat(2, 1fr); } .back-link { grid-column: span 2; } }
-@media (max-width: 560px) { .arcade-shell { width: min(100% - 24px, 1180px); padding-top: 18px; } .topbar { align-items: flex-start; flex-direction: column; } .game-grid { grid-template-columns: 1fr; } .game-panel { grid-template-columns: 1fr; } .back-link { grid-column: auto; } h1 { font-size: 34px; } .footer { flex-direction: column; gap: 12px; } }
+@media (max-width: 700px) { .skin-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .arcade-shell { width: min(100% - 24px, 1180px); padding-top: 18px; } .topbar { align-items: flex-start; flex-direction: column; } .game-grid { grid-template-columns: 1fr; } .game-panel { grid-template-columns: 1fr; } .back-link { grid-column: auto; } h1 { font-size: 34px; } .footer { flex-direction: column; gap: 12px; } .skin-grid { grid-template-columns: 1fr; } }

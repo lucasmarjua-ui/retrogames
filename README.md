@@ -16,6 +16,9 @@ Luego visita `http://localhost:8000`.
 
 - **Snake**: serpiente en grilla, manzanas, velocidad creciente y monedas al finalizar.
 - **Pac-Man**: laberinto simplificado, pellets, power pellets y fantasmas con IA básica.
+- **Tetris**: siete piezas clásicas, niveles y líneas puntuadas.
+- **Breakout**: pala, bloques de colores, rebotes y vidas limitadas.
+- **Space Invaders**: oleadas, disparos enemigos y defensa horizontal.
 
 Los controles son las flechas del teclado. Cada partida actualiza su récord y puede otorgar monedas al wallet global.
 
@@ -31,6 +34,8 @@ shared/storage.js          Persistencia genérica namespaced por juego
 shared/records.js          Récords y cálculo de medallas
 shared/games-registry.js   Catálogo que consume el portal
 shared/hud.js              Contrato común para score y monedas
+shared/skins.js            Catálogo, compra y equipamiento de skins CSS
+shared/audio.js            SFX y música chiptune sintetizados con Web Audio
 assets/                    Recursos opcionales futuros
 ```
 
@@ -51,7 +56,7 @@ El sitio quedará disponible en `https://lucasmarjua-ui.github.io/retrogames/` c
 
 ## Roadmap
 
-Próximos juegos: **Tetris**, **Breakout** y **Space Invaders**.
+Ideas futuras: PWA instalable, soporte táctil para los juegos y tablas online.
 
 ## Licencia
 

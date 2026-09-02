@@ -1,6 +1,8 @@
 import { Wallet } from '../../shared/wallet.js';
 import { saveScore, getBestScore } from '../../shared/records.js';
 import { mountHud } from '../../shared/hud.js';
+import { Audio } from '../../shared/audio.js';
+import '../../shared/skins.js';
 
 const canvas = document.querySelector('#game');
 const context = canvas.getContext('2d');
@@ -36,10 +38,10 @@ function tick() {
   const hitSelf = snake.some(part => part.x === head.x && part.y === head.y);
   if (hitWall || hitSelf) return endGame();
   snake.unshift(head);
-  if (head.x === apple.x && head.y === apple.y) { score += 10; hud.setScore(score); apple = randomApple(); if (score % 50 === 0) { clearInterval(timer); timer = setInterval(tick, Math.max(55, 135 - score / 4)); } } else snake.pop();
+  if (head.x === apple.x && head.y === apple.y) { score += 10; Audio.playSfx('eat'); hud.setScore(score); apple = randomApple(); if (score % 50 === 0) { Audio.playSfx('levelup'); clearInterval(timer); timer = setInterval(tick, Math.max(55, 135 - score / 4)); } } else snake.pop();
   draw();
 }
-function endGame() { clearInterval(timer); running = false; const result = saveScore('snake', score, { bronze: 50, silver: 120, gold: 250 }); Wallet.add(Math.max(1, Math.floor(score / 20))); bestElement.textContent = String(result.bestScore).padStart(4, '0'); statusElement.textContent = `GAME OVER / ${result.medal ? result.medal.toUpperCase() : 'SIN MEDALLA'}`; draw(); }
+function endGame() { clearInterval(timer); running = false; const result = saveScore('snake', score, { bronze: 50, silver: 120, gold: 250 }); Wallet.add(Math.max(1, Math.floor(score / 20))); Audio.playSfx('coin'); Audio.playSfx('gameover'); bestElement.textContent = String(result.bestScore).padStart(4, '0'); statusElement.textContent = `GAME OVER / ${result.medal ? result.medal.toUpperCase() : 'SIN MEDALLA'}`; draw(); }
 function draw() {
   context.fillStyle = '#050717'; context.fillRect(0, 0, canvas.width, canvas.height);
   context.strokeStyle = 'rgba(35,231,215,.12)'; context.lineWidth = 1; for (let x = 0; x <= columns; x++) { context.beginPath(); context.moveTo(x * cell, 0); context.lineTo(x * cell, canvas.height); context.stroke(); } for (let y = 0; y <= rows; y++) { context.beginPath(); context.moveTo(0, y * cell); context.lineTo(canvas.width, y * cell); context.stroke(); }
