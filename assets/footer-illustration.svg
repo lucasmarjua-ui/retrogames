@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax slice" role="presentation" focusable="false">
+  <title>Skyline arcade en tinta con dos sprites deslizándose</title>
+  <style>
+    .stroke { fill: none; stroke: #175A67; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .stroke-soft { fill: none; stroke: #2A707C; stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; opacity: .55; }
+    .dot { fill: #2A707C; opacity: .8; }
+    .moon { fill: none; stroke: #175A67; stroke-width: 2; }
+    .sprite { fill: none; stroke: #175A67; stroke-width: 2; stroke-linejoin: miter; }
+    @media (prefers-reduced-motion: no-preference) {
+      .sprite-a { animation: drift-a 46s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+      .sprite-b { animation: drift-b 60s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+      .mist-1 { animation: mist-scroll 70s linear infinite; }
+      .mist-2 { animation: mist-scroll 95s linear infinite reverse; }
+    }
+    @keyframes drift-a {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(60px, -8px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes drift-b {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-80px, 6px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes mist-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-600px); }
+    }
+  </style>
+
+  <path class="mist-1 stroke-soft" d="M0,120 Q150,108 300,120 T600,120 T900,120 T1200,120 T1500,120 T1800,120" />
+
+  <circle class="moon" cx="1040" cy="52" r="30" />
+  <path class="stroke-soft" d="M1016,32 A34,34 0 0 0 1040,86" />
+
+  <g class="sprite sprite-a">
+    <rect x="120" y="46" width="20" height="20" />
+    <rect x="125" y="36" width="5" height="8" />
+    <rect x="131" y="36" width="5" height="8" />
+  </g>
+  <g class="sprite sprite-b">
+    <rect x="300" y="76" width="14" height="14" />
+    <circle cx="307" cy="68" r="4" />
+  </g>
+
+  <path class="mist-2 stroke-soft" d="M0,96 Q150,106 300,96 T600,96 T900,96 T1200,96 T1500,96 T1800,96" />
+
+  <path class="stroke" d="M0,230 L1200,230" />
+
+  <path class="stroke" d="
+    M0,230
+    L0,190 L20,190 L20,172 L40,172 L40,190 L60,190 L60,152 L80,152 L80,190
+    L110,190 L110,144 L130,144 L130,128 L150,128 L150,144 L170,144 L170,190
+    L206,190 L206,164 L226,164 L226,182 L246,182 L246,164 L266,164 L266,190
+    L302,190 L302,112 L322,112 L322,96 L342,96 L342,112 L362,112 L362,190
+    L398,190 L398,168 L418,168 L418,184 L438,184 L438,168 L458,168 L458,190
+    L494,190 L494,138 L514,138 L514,122 L534,122 L534,106 L554,106 L554,122 L574,122 L574,138 L594,138 L594,190
+    L630,190 L630,166 L650,166 L650,182 L670,182 L670,166 L690,166 L690,190
+    L726,190 L726,124 L746,124 L746,108 L766,108 L766,124 L786,124 L786,190
+    L822,190 L822,174 L842,174 L842,188 L862,188 L862,174 L882,174 L882,190
+    L918,190 L918,140 L938,140 L938,120 L958,120 L958,140 L978,140 L978,190
+    L1014,190 L1014,178 L1034,178 L1034,190
+    L1200,190 L1200,230
+  " />
+
+  <g class="dot">
+    <rect x="26" y="180" width="5" height="5" />
+    <rect x="66" y="164" width="5" height="5" />
+    <rect x="116" y="158" width="5" height="5" />
+    <rect x="212" y="170" width="5" height="5" />
+    <rect x="252" y="170" width="5" height="5" />
+    <rect x="308" y="120" width="5" height="5" />
+    <rect x="348" y="120" width="5" height="5" />
+    <rect x="404" y="176" width="5" height="5" />
+    <rect x="444" y="176" width="5" height="5" />
+    <rect x="500" y="146" width="5" height="5" />
+    <rect x="540" y="112" width="5" height="5" />
+    <rect x="580" y="146" width="5" height="5" />
+    <rect x="636" y="172" width="5" height="5" />
+    <rect x="676" y="172" width="5" height="5" />
+    <rect x="732" y="132" width="5" height="5" />
+    <rect x="772" y="132" width="5" height="5" />
+    <rect x="828" y="178" width="5" height="5" />
+    <rect x="924" y="148" width="5" height="5" />
+    <rect x="964" y="148" width="5" height="5" />
+  </g>
+</svg>

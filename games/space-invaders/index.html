@@ -1,5 +1,58 @@
 <!doctype html>
 <html lang="es">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Space Invaders / RetroGames</title><link rel="stylesheet" href="../../shared/theme.css"></head>
-<body class="game-page"><main class="arcade-shell"><header class="topbar"><a class="brand" href="../../index.html">RETROGAMES</a><div class="wallet"><span class="coin">C</span><span><span id="wallet-count">0</span> MONEDAS</span></div></header><div class="cabinet-marquee">SPACE INVADERS // DEFEND EARTH</div><div class="game-layout"><div class="canvas-frame"><canvas id="game" width="640" height="560" aria-label="Juego Space Invaders"></canvas></div><aside class="game-panel"><a class="back-link" href="../../index.html">VOLVER AL PORTAL</a><div class="panel-block"><span class="panel-label">SCORE</span><strong id="score" class="score-value">0000</strong></div><div class="panel-block"><span class="panel-label">RECORD</span><strong id="best" class="score-value">0000</strong></div><div class="panel-block"><span class="panel-label">ESTADO</span><div id="status" class="game-status">PULSA UNA FLECHA O ESPACIO</div></div><div class="panel-block control-copy">FLECHAS: MOVER<br>ESPACIO: DISPARAR</div><button id="restart" class="action-button" type="button">NUEVA PARTIDA</button></aside></div></main><script type="module" src="./space-invaders.js"></script></body>
+<body class="game-page"><main class="arcade-shell"><header class="topbar"><a class="brand" href="../../index.html">RETROGAMES</a><div class="wallet"><span class="coin">C</span><span><span id="wallet-count">0</span> MONEDAS</span></div></header><div class="cabinet-marquee">SPACE INVADERS // DEFEND EARTH</div><div class="game-layout"><div class="canvas-frame"><canvas id="game" width="640" height="560" aria-label="Juego Space Invaders"></canvas></div><aside class="game-panel"><a class="back-link" href="../../index.html">VOLVER AL PORTAL</a><div class="panel-block"><span class="panel-label">SCORE</span><strong id="score" class="score-value">0000</strong></div><div class="panel-block"><span class="panel-label">RECORD</span><strong id="best" class="score-value">0000</strong></div><div class="panel-block"><span class="panel-label">ESTADO</span><div id="status" class="game-status">PULSA UNA FLECHA O ESPACIO</div></div><div class="panel-block control-copy">FLECHAS: MOVER<br>ESPACIO: DISPARAR</div><button id="restart" class="action-button" type="button">NUEVA PARTIDA</button></aside></div></main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="footer-logo" href="../../index.html" aria-label="RetroGames — inicio">
+            <svg class="footer-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="10" y="30" width="28" height="10" rx="2"></rect><line x1="24" y1="30" x2="24" y2="14"></line><circle cx="24" cy="9" r="5"></circle><circle cx="31" cy="35" r="2"></circle></svg>
+            <span class="footer-wordmark">RetroGames</span>
+          </a>
+          <p class="footer-tagline">Salón arcade web hecho a mano: seis clásicos, un mismo sistema de puntajes, monedas y progreso.</p>
+        </div>
+        <div class="footer-contact">
+          <span class="footer-label">Contacto</span>
+          <a href="mailto:lucas.mar.jua@gmail.com">lucas.mar.jua@gmail.com</a>
+          <a class="footer-icon-link" href="https://github.com/lucasmarjua-ui" target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"></rect><polyline points="9 8 5 12 9 16"></polyline><polyline points="15 8 19 12 15 16"></polyline></svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+      <nav class="footer-columns" aria-label="Enlaces de RetroGames">
+        <div class="footer-col">
+          <span class="footer-label">Juegos</span>
+          <a href="../snake/index.html">Snake</a>
+          <a href="../pacman/index.html">Pac-Man</a>
+          <a href="../tetris/index.html">Tetris</a>
+          <a href="../breakout/index.html">Breakout</a>
+          <a href="../space-invaders/index.html">Space Invaders</a>
+          <a href="../asteroids/index.html">Asteroids</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-label">Proyecto</span>
+          <a href="https://github.com/lucasmarjua-ui/retrogames" target="_blank" rel="noreferrer">Código fuente</a>
+          <a href="../../about.html">Cómo está hecho</a>
+          <a href="../../LICENSE">Licencia MIT</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-label">Otros proyectos</span>
+          <a href="https://github.com/lucasmarjua-ui" target="_blank" rel="noreferrer">OneDay</a>
+          <a href="https://github.com/lucasmarjua-ui" target="_blank" rel="noreferrer">PawMatch</a>
+          <a href="https://github.com/lucasmarjua-ui" target="_blank" rel="noreferrer">Ver todos los repos</a>
+        </div>
+      </nav>
+      <div class="footer-bottom">
+        <span>© 2026 RetroGames — Lucas Martinez</span>
+        <div class="footer-social" aria-label="Redes de Lucas Martinez">
+          <a href="https://github.com/lucasmarjua-ui" target="_blank" rel="noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="20" height="20" rx="5"></rect><polyline points="9 8 5 12 9 16"></polyline><polyline points="15 8 19 12 15 16"></polyline></svg></a>
+          <a href="mailto:lucas.mar.jua@gmail.com" aria-label="Enviar email"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg></a>
+        </div>
+      </div>
+    </div>
+    <img class="footer-illustration" src="../../assets/footer-illustration.svg" alt="" aria-hidden="true">
+  </footer>
+  <script type="module" src="./space-invaders.js"></script></body>
 </html>
