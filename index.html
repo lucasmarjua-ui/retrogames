@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="RetroGames: juegos arcade de los años 80.">
   <title>RetroGames / Arcade Portal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="./shared/theme.css">
 </head>
 <body>
   <main class="arcade-shell">
       <header class="topbar"><a class="brand" href="./index.html">RETROGAMES</a><div class="portal-actions"><span id="player-avatar" class="player-avatar"></span><span id="player-name" class="player-name">INVITADO</span><button id="character-open" class="portal-button" type="button">MI PERSONAJE</button><button id="profile-open" class="portal-button" type="button">MI PERFIL</button><button id="login-open" class="portal-button" type="button">PLAYER LOGIN</button><button id="logout" class="portal-button" type="button" hidden>CERRAR SESION</button><button id="sound-toggle" class="portal-button" type="button">SONIDO: ON</button><div class="wallet"><span class="coin">C</span><span><span id="wallet-count">0</span> MONEDAS</span></div></div></header>
-    <section class="hero"><div><span class="eyebrow">/// SALON 198X / PLAYER 01</span><h1>PLAY THE<br>CLASSICS.</h1><p class="hero-copy">Dos leyendas arcade. Una sola máquina. Tu mejor partida siempre queda encendida.</p></div><div class="hero-stat"><strong id="game-count">02</strong><span>JUEGOS EN CARTELERA</span></div></section>
+    <section class="hero"><div><span class="eyebrow">/// SALON 198X / PLAYER 01</span><h1>PLAY THE<br>CLASSICS.</h1><p class="hero-copy">Seis clásicos arcade. Una sola máquina. Tu mejor partida siempre queda encendida.</p></div><div class="hero-stat"><strong id="game-count">06</strong><span>JUEGOS EN CARTELERA</span></div></section>
     <section><div class="section-heading"><h2>ELIGE TU JUEGO</h2><span>HIGH SCORE NEVER SLEEPS</span></div><div class="game-grid" id="game-grid"></div></section>
     <section class="skin-shop"><div class="section-heading"><h2>TIENDA / SKINS</h2><span>PERSONALIZA TU CABINET</span></div><div class="skin-grid" id="skin-grid"></div></section>
     <section class="slot-section"><div class="section-heading"><h2>TRAGAPERRAS</h2><span>PRUEBA TU SUERTE</span></div><div class="slot-machine"><div class="slot-reels"><span id="slot-1">?</span><span id="slot-2">?</span><span id="slot-3">?</span></div><div class="slot-bets" id="slot-bets"><button type="button" data-bet="5">5</button><button type="button" data-bet="10">10</button><button type="button" data-bet="25">25</button><button type="button" data-bet="50">50</button></div><p id="slot-bet-label">APUESTA: 5 MONEDAS</p><p id="slot-result">ELIGE UNA APUESTA</p><div class="slot-actions"><button id="slot-max" class="portal-button" type="button">APOSTAR MAXIMO</button><button id="slot-spin" class="action-button" type="button">GIRAR</button></div></div></section>

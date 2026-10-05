@@ -2,121 +2,144 @@
 
 [![Deploy to GitHub Pages](https://github.com/lucasmarjua-ui/retrogames/actions/workflows/deploy.yaml/badge.svg)](https://github.com/lucasmarjua-ui/retrogames/actions/workflows/deploy.yaml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Demo en vivo](https://img.shields.io/badge/demo-en%20vivo-brightgreen)](https://lucasmarjua-ui.github.io/retrogames/)
-![Sin dependencias](https://img.shields.io/badge/dependencias-cero-orange)
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://lucasmarjua-ui.github.io/retrogames/)
+![No dependencies](https://img.shields.io/badge/dependencies-zero-orange)
 
-RetroGames es un portal web estático inspirado en los salones recreativos de los años 80. Reúne juegos arcade hechos con HTML, CSS, JavaScript vanilla y Canvas API, con una identidad visual común de neón, tipografía pixel-art y scanlines CRT sutiles.
+RetroGames is a static web portal inspired by 1980s arcades. It brings together six classic arcade games built with HTML, CSS, vanilla JavaScript and the Canvas API, sharing one visual identity: neon colours, pixel-art type and subtle CRT scanlines.
 
-**[▶ Jugar ahora](https://lucasmarjua-ui.github.io/retrogames/)**
+Built with no frameworks and no build step. The in-game interface is in Spanish.
 
-## Capturas
+**[▶ Play now](https://lucasmarjua-ui.github.io/retrogames/)**
 
-| Portal principal | Tienda y tragaperras |
+## Screenshots
+
+| Main portal | Shop and slot machine |
 | --- | --- |
-| ![Portal principal de RetroGames con la rejilla de juegos](screenshots/portal.png) | ![Tienda de skins y tragaperras](screenshots/tienda.png) |
+| ![RetroGames main portal with the game grid](screenshots/portal.png) | ![Cabinet skins shop and slot machine](screenshots/tienda.png) |
 
-| Personaje personalizable | Ranking global |
+| Custom character | Global leaderboard |
 | --- | --- |
-| ![Modal de personalización del personaje](screenshots/personaje.png) | ![Modal de ranking global por juego](screenshots/ranking.png) |
+| ![Character customisation dialog](screenshots/personaje.png) | ![Per-game global leaderboard dialog](screenshots/ranking.png) |
 
-## Jugar localmente
+## Contents
 
-No hay dependencias ni build step. Se puede abrir `index.html` directamente en el navegador. Para una experiencia equivalente a GitHub Pages, sirve la raíz con cualquier servidor estático, por ejemplo:
+- [Play locally](#play-locally)
+- [Games](#games)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Technical decisions](#technical-decisions)
+- [Deployment](#deployment)
+- [Roadmap](#roadmap)
+
+## Play locally
+
+There are no dependencies and no build step. The games use native ES modules, so serve the repository root with any static server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Luego visita `http://localhost:8000`.
+Then visit `http://localhost:8000`.
 
-## Juegos actuales
+## Games
 
-- **Snake**: serpiente en grilla, manzana dorada, combos, velocidad creciente y movimiento suavizado.
-- **Pac-Man**: laberinto con más de un diseño, fantasmas con comportamientos propios, frutas bonus y animaciones de asustado/comido.
-- **Tetris**: pieza hold, cola de próximas piezas, pieza fantasma, wall kicks y bonus por combos/Tetris.
-- **Breakout**: power-ups al romper bloques, varios diseños de nivel, ladrillos resistentes y combos.
-- **Space Invaders**: invasores que aceleran, UFO bonus, búnkeres destructibles y oleadas crecientes.
-- **Asteroids**: nave con inercia, asteroides que se dividen al impactar y oleadas crecientes.
+| Game | Highlights |
+| --- | --- |
+| **Snake** | Grid movement with smoothing, golden apples, combos and increasing speed. |
+| **Pac-Man** | Several maze layouts, ghosts with their own behaviours, bonus fruit and frightened/eaten animations. |
+| **Tetris** | Hold piece, next-piece queue, ghost piece, wall kicks and combo/Tetris bonuses. |
+| **Breakout** | Power-ups from broken bricks, several level layouts, tougher bricks and combos. |
+| **Space Invaders** | Accelerating invaders, bonus UFO, destructible bunkers and growing waves. |
+| **Asteroids** | Ship with inertia, asteroids that split on impact and growing waves. |
 
-Los controles son las flechas del teclado (más pausa con ESC y tutorial de controles la primera vez que se entra a cada juego). Cada partida actualiza su récord y puede otorgar monedas al wallet global.
+All games use the arrow keys, with **Esc** to pause and a controls tutorial the first time each game is opened. Every run updates the game's high score and can award coins to the shared wallet.
 
-## Cuentas y progreso
+## Features
 
-RetroGames funciona como invitado sin registro: las monedas, récords, skins, personaje y logros se guardan en `localStorage` y el jugador puede continuar jugando offline. Desde **PLAYER LOGIN** se puede crear una cuenta o iniciar sesión con **nombre de usuario y contraseña** (por debajo usa Firebase Authentication con un email generado internamente a partir del nombre de usuario, nunca se pide ni se muestra un email real). Al entrar, el progreso local se fusiona con el documento `users/{uid}` de Firestore y los cambios posteriores se guardan en ambos sitios. Cerrar sesión vuelve al modo invitado sin borrar los datos locales.
+### Accounts and progress
 
-La `firebaseConfig` incluida es configuración pública de cliente, no un secreto. La seguridad real depende de las reglas de Firestore y de Authentication.
+RetroGames is fully playable as a guest: coins, high scores, skins, character and achievements are stored in `localStorage`, so it also works offline. **PLAYER LOGIN** lets players sign up or log in with a **username and password**. Under the hood this uses Firebase Authentication with an email generated from the username; a real email is never requested or shown. On login, local progress is merged into the player's `users/{uid}` Firestore document and later changes are saved to both. Logging out returns to guest mode without deleting local data.
 
-## Trofeos y logros
+The bundled `firebaseConfig` is public client configuration, not a secret. Security is enforced by Firestore security rules and Authentication.
 
-Cada juego tiene tres logros propios, con objetivos de bronce, plata y oro basados en acciones de juego además del puntaje. El botón `T` de cada tarjeta abre el detalle y muestra tanto los logros desbloqueados como los pendientes. Los desbloqueos se persisten en `localStorage` y se sincronizan con la cuenta Firebase cuando hay una sesión activa.
+### Achievements
 
-## Mi personaje
+Each game has three achievements with bronze, silver and gold goals based on in-game actions as well as score. The `T` button on each game card opens the details, showing unlocked and pending achievements. Unlocks are stored in `localStorage` and synced to the player's account when logged in.
 
-Cada jugador tiene un personaje personalizable (camisetas, gorros, gafas y accesorios) que se compra con monedas y aparece junto a su nombre en la cabecera del portal. Algunos artículos son exclusivos y se desbloquean automáticamente por logros de juego en vez de comprarse (por ejemplo, conseguir oro en los seis juegos clásicos o mantener una racha de siete días).
+### Custom character
 
-## Racha y tragaperras
+Every player has a customisable character (shirts, hats, glasses and accessories) bought with coins and shown next to their name in the portal header. Some items are exclusive and unlock automatically through achievements instead of being bought, such as earning gold in all six games or keeping a seven-day streak.
 
-El portal registra una racha diaria en `retrogames.streak` y entrega monedas al volver cada día, hasta un máximo de siete días de recompensa. La sección **TRAGAPERRAS** permite elegir cuánto apostar y girar tres carretes animados con premios por dos o tres símbolos iguales.
+### Daily streak and slot machine
 
-## Ranking global y perfil de jugador
+The portal tracks a daily streak in `retrogames.streak` and awards coins for coming back each day, up to seven days of rewards. The **slot machine** section lets players choose a bet and spin three animated reels, paying out for two or three matching symbols.
 
-El botón **RANKING GLOBAL** (junto al Hall of Fame) muestra el top 10 real de jugadores registrados por cada juego, leído en vivo desde una colección pública `leaderboards/{gameId}/entries` en Firestore; sin sesión iniciada se avisa de que hace falta una cuenta para aparecer en la lista. Cada jugador solo puede escribir su propia entrada (reglas de Firestore verificadas por `uid`), pero cualquier usuario autenticado puede leer el ranking completo. El botón **MI PERFIL** muestra nombre de usuario, fecha de registro, partidas totales, tiempo total jugado y el juego favorito de cada jugador, calculado a partir de `shared/stats.js` y sincronizado también con la cuenta Firebase.
+### Global leaderboard and player profile
 
-## Arquitectura
+The **global leaderboard** button (next to the Hall of Fame) shows the real top 10 registered players for each game, read live from a public `leaderboards/{gameId}/entries` collection in Firestore. Guests are told they need an account to appear on it. Firestore rules check the `uid`, so each player can only write their own entry, while any signed-in player can read the full ranking.
+
+**My profile** shows the username, sign-up date, total games played, total play time and favourite game, calculated in `shared/stats.js` and also synced to the player's account.
+
+## Architecture
 
 ```text
-index.html                 Portal y selección de juegos
-about.html                 Página de créditos e información del proyecto
-games/<juego>/              Página y lógica de cada juego (Snake, Pac-Man, Tetris, Breakout, Space Invaders, Asteroids)
-shared/theme.css           Variables, tipografía, layout y HUD visual
-shared/wallet.js           Monedero global persistido en localStorage
-shared/storage.js          Persistencia genérica namespaced por juego
-shared/records.js          Récords y cálculo de medallas
-shared/games-registry.js   Catálogo que consume el portal
-shared/hud.js              Contrato común para score y monedas
-shared/skins.js            Catálogo, compra y equipamiento de skins de cabinet
-shared/character.js        Catálogo y estado del personaje personalizable
-shared/audio.js            SFX y música chiptune sintetizados con Web Audio
-shared/firebase-config.js  Configuración e inicialización del SDK Firebase CDN
-shared/auth.js             Registro, login con usuario/contraseña, invitado y sincronización Firestore
-shared/achievements.js     Catálogo y persistencia de logros por juego
-shared/streak.js           Racha diaria y recompensa de monedas
-shared/slot-machine.js     Lógica de la tragaperras con apuesta variable
-shared/tutorial.js         Tutorial de controles por juego, una sola vez
-shared/leaderboard.js      Envío y lectura del ranking global en Firestore
-shared/stats.js            Estadísticas de juego (partidas, tiempo, favorito)
-assets/                    Recursos opcionales (imagen de vista social, etc.)
+index.html                 Portal and game selection
+about.html                 Credits and project information
+games/<game>/              Page and logic for each game
+shared/theme.css           Design tokens, typography, layout and HUD styles
+shared/wallet.js           Shared coin wallet stored in localStorage
+shared/storage.js          Generic per-game namespaced storage
+shared/records.js          High scores and medal thresholds
+shared/games-registry.js   Game catalogue used by the portal
+shared/hud.js              Shared score and coin HUD
+shared/skins.js            Cabinet skin catalogue, purchases and equipping
+shared/character.js        Character catalogue and state
+shared/audio.js            Chiptune music and sound effects synthesised with Web Audio
+shared/firebase-config.js  Firebase config and lazy SDK loader
+shared/auth.js             Sign-up, login, guest mode and Firestore sync
+shared/achievements.js     Per-game achievement catalogue and storage
+shared/streak.js           Daily streak and coin reward
+shared/slot-machine.js     Slot machine logic with variable bets
+shared/tutorial.js         One-time controls tutorial per game
+shared/leaderboard.js      Global leaderboard reads and writes
+shared/stats.js            Play statistics (games, time, favourite)
+assets/                    Static images
 ```
 
-### Cómo agregar un juego
+### Adding a game
 
-1. Crea `games/<id>/index.html` y su script JavaScript con Canvas.
-2. Importa `Wallet`, `mountHud`, `saveScore` y `getBestScore` desde `shared/`.
-3. Añade una entrada a `shared/games-registry.js` con `id`, título, descripción, ruta, clase visual y umbrales `bronze`, `silver`, `gold`.
-4. El portal mostrará automáticamente la nueva tarjeta y su medalla; no hace falta modificar `index.html`.
+1. Create `games/<id>/index.html` and its Canvas script.
+2. Import `Wallet`, `mountHud`, `saveScore` and `getBestScore` from `shared/`.
+3. Add an entry to `shared/games-registry.js` with its `id`, title, description, path, visual class and `bronze`, `silver` and `gold` thresholds.
+4. The portal shows the new card and its medal automatically, with no changes to `index.html`.
 
-El wallet usa la clave global `retrogames.wallet`, mientras que los datos persistentes de cada juego viven bajo `retrogames.game-data` y su propio `gameId`. Así, cambiar de juego o cerrar el navegador no borra las monedas ni los mejores puntajes.
+The wallet uses the global `retrogames.wallet` key, while each game's data lives under `retrogames.game-data` keyed by its `gameId`. Switching games or closing the browser never loses coins or high scores.
 
-## Decisiones técnicas
+## Technical decisions
 
-**Sin build step ni frameworks.** Todo el proyecto es HTML, CSS y JavaScript vanilla con módulos ES nativos del navegador, incluido el SDK de Firebase, que se importa directo desde su CDN (`https://www.gstatic.com/firebasejs/...`) en vez de instalarse por npm. Esto permite que GitHub Pages sirva el repositorio tal cual, sin paso de compilación ni CI de build, y que cualquiera pueda clonar el repositorio y abrir `index.html` sin instalar nada.
+**No build step or frameworks.** The whole project is HTML, CSS and vanilla JavaScript using native ES modules. GitHub Pages serves the repository as-is, and anyone can clone it and run it without installing anything.
 
-**Cero archivos de audio o imagen externos.** El sonido se sintetiza en tiempo real con la Web Audio API (`shared/audio.js`) y el personaje/las skins se dibujan por código en vez de cargar sprites, para mantener el repositorio ligero y evitar dependencias de assets binarios.
+**Firebase is loaded lazily.** The Firebase SDK comes from Google's CDN through a dynamic `import()` in `shared/firebase-config.js`, never a static import. If the CDN is blocked by an ad blocker, a corporate proxy or a lost connection, the portal and every game still load and play as a guest; only accounts, sync and the leaderboard are switched off.
 
-**Arquitectura de módulos compartidos con registro central.** Cada juego es independiente, pero todos consumen los mismos módulos de `shared/` (monedero, récords, logros, audio, HUD). Añadir un juego nuevo consiste en crear su carpeta y una entrada en `games-registry.js`, sin tocar el portal.
+**No external audio or image files for gameplay.** Sound is synthesised in real time with the Web Audio API (`shared/audio.js`), and the character and skins are drawn in code instead of loaded as sprites. This keeps the repository light and free of binary assets.
 
-**Cuentas opcionales, nunca obligatorias.** El progreso vive primero en `localStorage`; Firebase solo se usa para sincronizar entre dispositivos cuando el jugador decide crear una cuenta, y el login pide un nombre de usuario (no un email) para mantener la experiencia coherente con el resto del portal.
+**Shared modules with a central registry.** Each game is independent, but all of them use the same `shared/` modules (wallet, records, achievements, audio, HUD). Adding a game means creating its folder and one entry in `games-registry.js`, without touching the portal.
 
-## GitHub Pages
+**Accounts are optional.** Progress lives in `localStorage` first. Firebase is only used to sync across devices once a player chooses to create an account, and login asks for a username rather than an email to keep the arcade feel.
 
-El workflow `.github/workflows/deploy.yaml` publica los archivos estáticos en cada push a `main`, sin compilación. Después de crear el repositorio, activa Pages una sola vez en **Settings → Pages → Source: GitHub Actions**. Ese toggle no se puede configurar mediante Git.
+## Deployment
 
-El sitio está disponible en `https://lucasmarjua-ui.github.io/retrogames/`.
+The `.github/workflows/deploy.yaml` workflow publishes the static files to GitHub Pages on every push to `main`, with no build. Pages must be enabled once under **Settings → Pages → Source: GitHub Actions**.
+
+The site is live at <https://lucasmarjua-ui.github.io/retrogames/>.
 
 ## Roadmap
 
-Ideas futuras: soporte de PWA instalable, mando/gamepad, modo daltónico y volumen independiente de música/efectos.
+- Installable PWA support
+- Gamepad support
+- Colour-blind friendly mode
+- Separate music and sound-effect volume controls
 
-## Licencia
+## License
 
-MIT. Copyright Lucas Martinez, 2026. Ver [LICENSE](LICENSE).
+MIT. Copyright Lucas Martinez, 2026. See [LICENSE](LICENSE).

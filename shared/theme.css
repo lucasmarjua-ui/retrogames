@@ -155,8 +155,8 @@ canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; 
 .slot-actions .action-button, .slot-actions .portal-button { min-width: 150px; }
 .slot-win { color: var(--green); animation: slot-reveal .35s ease-out; }
 .slot-lose { color: var(--ink-soft); }
-.streak-notice { position: fixed; left: 50%; bottom: 24px; z-index: 35; transform: translate(-50%, 140%); border: 1px solid var(--ink); border-radius: 999px; padding: 13px 20px; background: var(--ink); color: var(--cream); box-shadow: var(--shadow-soft); font-size: 11px; font-weight: 500; transition: transform .3s ease; }
-.streak-notice.visible { transform: translate(-50%, 0); }
+.streak-notice { position: fixed; left: 50%; bottom: 24px; z-index: 35; transform: translate(-50%, calc(100% + 24px)); visibility: hidden; border: 1px solid var(--ink); border-radius: 999px; padding: 13px 20px; background: var(--ink); color: var(--cream); box-shadow: var(--shadow-soft); font-size: 11px; font-weight: 500; transition: transform .3s ease, visibility 0s linear .3s; }
+.streak-notice.visible { transform: translate(-50%, 0); visibility: visible; transition: transform .3s ease, visibility 0s; }
 .tutorial-overlay { position: fixed; inset: 0; z-index: 45; display: grid; place-items: center; padding: 20px; background: rgba(23, 90, 103, .4); backdrop-filter: blur(3px); }
 .tutorial-panel { width: min(460px, 100%); border: 1px solid var(--ink); border-radius: 18px; padding: 30px; background: var(--cream); color: var(--ink); box-shadow: 0 24px 50px rgba(23, 90, 103, .28); text-align: center; }
 .tutorial-panel h2 { font-family: var(--font-display); font-weight: 500; margin: 0 0 18px; font-size: 24px; }
